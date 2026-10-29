@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f8f5">
+  <meta name="description" content="دفتر بسيط لإدارة مشتركي المولّدة والأمبيرات ومعاينة كشف الطباعة.">
+  <title>دفتر المولّدة | سجل المشتركين</title>
+  <style>
+    :root{--green:#126b55;--green-dark:#0e5142;--mint:#e6f2e8;--ink:#1f332c;--muted:#788b81;--line:#e5ece7;--bg:#f5f7f3;--white:#fff;--danger:#b54848;--shadow:0 12px 32px rgba(25,61,46,.045)}
+    *{box-sizing:border-box}
+    [hidden]{display:none!important}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,"Noto Sans Arabic","Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.6}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible{outline:3px solid #9bd7b5;outline-offset:3px}
+    button:disabled{cursor:not-allowed;opacity:.55}
+    svg{display:block;flex:none}
+    .icon{width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .app-shell{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr)}
+    .sidebar{background:#fff;border-left:1px solid #eaf0eb;padding:29px 20px 22px;display:flex;flex-direction:column;min-height:100vh;position:sticky;top:0;height:100vh}
+    .brand{display:flex;align-items:center;gap:11px;white-space:nowrap}
+    .brand-mark{height:43px;width:43px;display:grid;place-items:center;border-radius:14px;background:var(--green);color:white;box-shadow:0 5px 13px rgba(18,107,85,.18)}
+    .brand-mark .icon{width:23px;height:23px;stroke-width:2.1}
+    .brand-name{font-size:17px;font-weight:800;line-height:1.3;letter-spacing:-.4px}
+    .brand-sub{color:#9aaba1;font-size:10px;margin-top:4px}
+    .side-label{margin:53px 12px 11px;color:#a0afa5;font-size:11px;font-weight:700}
+    .nav-btn{border:0;background:transparent;color:#75877d;border-radius:12px;width:100%;display:flex;align-items:center;gap:12px;text-align:right;padding:13px 13px;font-weight:700;font-size:13px;margin:2px 0}
+    .nav-btn:hover{background:#f3f8f4;color:var(--green)}
+    .nav-btn.active{background:#e8f3ea;color:var(--green)}
+    .nav-btn.active:before{content:"";position:absolute;right:0;width:3px;height:27px;border-radius:3px 0 0 3px;background:var(--green)}
+    .side-bottom{margin-top:auto}
+    .side-note{padding:17px 15px;background:#f6f9f4;border:1px solid #edf3ea;border-radius:16px}
+    .side-note .note-icon{width:31px;height:31px;color:#628e71;background:#e8f2e5;border-radius:10px;display:grid;place-items:center;margin-bottom:10px}
+    .side-note strong{font-size:12px;display:block}
+    .side-note p{font-size:11px;color:#91a196;margin:5px 0 0;line-height:1.8}
+    .main{min-width:0;padding:29px 44px 48px}
+    .content{max-width:1320px;margin:auto}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:30px}
+    .topbar-title{font-weight:800;font-size:15px}
+    .topbar-sub{font-size:11px;color:#9aaba1;margin-top:2px}
+    .save-status{display:inline-flex;align-items:center;gap:7px;border:1px solid #e7eee8;background:white;border-radius:30px;color:#788c7e;padding:7px 11px;font-size:11px;white-space:nowrap}
+    .save-status:before{content:"";height:7px;width:7px;background:#72bf8c;border-radius:50%;box-shadow:0 0 0 3px #edf8ef}
+    .save-status.error:before{background:#d47d62;box-shadow:0 0 0 3px #fcf1ec}
+    .mobile-brand{display:none}
+    .hero{position:relative;overflow:hidden;background:#eaf4e8;border:1px solid #e1efde;border-radius:22px;padding:29px 32px;min-height:220px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .hero-copy{position:relative;z-index:1}
+    .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;color:#5d8a6a;font-weight:700;margin-bottom:10px}
+    .eyebrow span{width:7px;height:7px;border-radius:50%;background:#78b786}
+    h1{font-size:26px;line-height:1.45;letter-spacing:-.8px;margin:0;color:#1d4937}
+    .hero p{color:#72927b;font-size:13px;margin:8px 0 22px}
+    .hero-actions,.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .btn{border:1px solid transparent;min-height:43px;padding:0 17px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:12px;white-space:nowrap;transition:background .15s,border-color .15s,transform .15s}
+    .btn:active{transform:translateY(1px)}
+    .btn .icon{height:17px;width:17px}
+    .btn-primary{background:var(--green);color:#fff;box-shadow:0 5px 12px rgba(18,107,85,.12)}
+    .btn-primary:hover{background:var(--green-dark)}
+    .btn-white{background:#fff;color:#3d6351;border-color:rgba(64,111,78,.08)}
+    .btn-white:hover,.btn-outline:hover{background:#f8fbf8}
+    .btn-outline{background:#fff;color:#536c5d;border-color:#e5ece7}
+    .btn-danger{background:#b54848;color:#fff}
+    .hero-art{position:relative;flex:0 0 235px;height:154px;display:grid;place-items:center;margin-left:35px}
+    .hero-art:before,.hero-art:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(76,145,91,.13)}
+    .hero-art:before{width:210px;height:210px}
+    .hero-art:after{width:154px;height:154px}
+    .hero-art-inner{width:109px;height:109px;border:1px solid rgba(255,255,255,.85);border-radius:32px;background:linear-gradient(140deg,#d4e9cb,#c4e3c7);display:grid;place-items:center;transform:rotate(-7deg);box-shadow:0 15px 30px rgba(89,146,88,.12);position:relative;z-index:1}
+    .hero-art-inner svg{width:50px;height:50px;color:#388668;transform:rotate(7deg);stroke-width:1.4}
+    .spark{position:absolute;border-radius:50%;background:#a7d59d}
+    .spark.one{width:10px;height:10px;top:12px;right:24px}
+    .spark.two{width:6px;height:6px;bottom:18px;left:19px;background:#83c49b}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0}
+    .stat{background:#fff;border:1px solid #edf1ed;border-radius:17px;padding:18px 19px;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:96px;box-shadow:var(--shadow)}
+    .stat-label{font-size:12px;color:#667f6e;margin-bottom:5px}
+    .stat-value{font-size:23px;line-height:1.3;font-weight:800;color:#264236;letter-spacing:-.5px}
+    .stat-value small{font-size:11px;color:#9aac9f;font-weight:400;margin-right:4px}
+    .stat-icon{height:43px;width:43px;border-radius:13px;display:grid;place-items:center;color:#4c9672;background:#edf7ed}
+    .stat:nth-child(2) .stat-icon{color:#b29b4c;background:#faf7e6}
+    .stat:nth-child(3) .stat-icon{color:#7b8eaa;background:#edf3fa}
+    .panel{background:#fff;border:1px solid #ebf0eb;border-radius:19px;box-shadow:var(--shadow);overflow:hidden}
+    .panel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:25px 25px 19px}
+    .panel-top h2{font-size:16px;letter-spacing:-.3px;margin:0;display:flex;gap:9px;align-items:center}
+    .count-pill{font-size:10px;font-weight:700;border-radius:20px;color:#619276;background:#edf7ed;padding:3px 8px}
+    .panel-top p{font-size:12px;color:#718879;margin:5px 0 0}
+    .panel-controls{padding:0 25px 20px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .search-wrap{position:relative;max-width:360px;width:100%}
+    .search-wrap .icon{position:absolute;right:13px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:#a2b0a6;pointer-events:none}
+    .search{width:100%;height:41px;border:1px solid #edf1ed;background:#fafcf9;border-radius:10px;padding:0 39px 0 14px;color:var(--ink);font-size:12px}
+    .search::placeholder{color:#adb9af}
+    .table-wrap{overflow-x:auto}
+    table{border-collapse:collapse;width:100%;text-align:right}
+    .data-table{min-width:600px}
+    thead{background:#f8faf8}
+    th{color:#6d8373;font-size:12px;padding:13px 24px;text-align:right;font-weight:700;white-space:nowrap}
+    td{font-size:13px;padding:14px 24px;border-bottom:1px solid #f0f4f0;color:#496053;vertical-align:middle}
+    tbody tr:last-child td{border-bottom:0}
+    .row-number{color:#a0afa4;width:72px}
+    .name-cell{font-weight:700;color:#334e3e;min-width:180px}
+    .amp-pill{display:inline-block;background:#f1f8f1;color:#4a8b68;border-radius:8px;padding:3px 9px;white-space:nowrap}
+    .row-actions{display:flex;gap:4px;justify-content:flex-end}
+    .icon-btn{width:34px;height:34px;border:0;border-radius:9px;background:transparent;color:#90a297;display:inline-grid;place-items:center}
+    .icon-btn:hover{background:#f1f7f1;color:var(--green)}
+    .icon-btn.delete:hover{background:#fff1f1;color:var(--danger)}
+    .icon-btn .icon{width:17px;height:17px}
+    .empty{padding:46px 20px 52px;text-align:center}
+    .empty-visual{width:68px;height:68px;margin:0 auto 15px;position:relative;display:grid;place-items:center;border-radius:22px;background:#eff7ed;color:#74a882}
+    .empty-visual .icon{width:28px;height:28px;stroke-width:1.4}
+    .empty-visual:after{content:"+";position:absolute;bottom:1px;left:-3px;width:21px;height:21px;line-height:20px;border:3px solid white;border-radius:50%;background:#89bb83;color:#fff;font-size:16px;font-weight:400}
+    .empty h3{font-size:14px;margin:0;color:#47614f}
+    .empty p{margin:7px 0 17px;color:#718879;font-size:12px}
+    .empty .btn{min-height:38px}
+    .panel-foot{border-top:1px solid #f0f4f0;padding:13px 25px;display:flex;justify-content:space-between;gap:10px;color:#a2b0a6;font-size:10px}
+    .footnote{display:flex;justify-content:space-between;gap:10px;margin:22px 3px 0;font-size:10px;color:#a4b2a7}
+    .mobile-nav{display:none}
+    dialog{border:0;padding:0;border-radius:20px;width:min(94vw,520px);max-height:min(90vh,900px);color:var(--ink);box-shadow:0 25px 80px rgba(14,45,31,.22);overflow:auto}
+    dialog::backdrop{background:rgba(18,43,31,.43);backdrop-filter:blur(3px)}
+    .dialog-head{display:flex;align-items:start;justify-content:space-between;gap:16px;padding:23px 24px 0}
+    .dialog-head h2{font-size:17px;margin:0}
+    .dialog-head p{font-size:12px;color:#91a195;margin:4px 0 0}
+    .dialog-close{background:#f5f8f5;color:#7e9184}
+    .dialog-body{padding:20px 24px 24px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+    .full{grid-column:1/-1}
+    label.field{display:block}
+    .field-label{display:block;font-size:12px;font-weight:700;margin-bottom:7px;color:#536b5a}
+    .required{color:#ba7771}
+    .input{width:100%;height:45px;border:1px solid #e4ebe5;border-radius:10px;padding:0 12px;color:var(--ink);background:#fff;min-width:0}
+    .input::placeholder{color:#b5c1b7}
+    .input:focus{border-color:#7dbb91;outline:3px solid #eaf6eb}
+    .hint{color:#9baba0;font-size:10px;margin:6px 0 0}
+    .error-message{min-height:19px;margin:10px 0 0;font-size:11px;color:var(--danger)}
+    .dialog-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:19px}
+    .field-add{display:flex;gap:8px;align-items:flex-end;margin-bottom:16px}
+    .field-add label{flex:1;min-width:0}
+    .field-list{border:1px solid #edf1ed;border-radius:13px;overflow:hidden}
+    .field-row{display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid #eff3ef}
+    .field-row:last-child{border-bottom:0}
+    .field-index{width:27px;height:27px;border-radius:8px;display:grid;place-items:center;background:#eef7ed;color:#76a981;font-size:11px}
+    .field-row strong{font-size:12px;flex:1}
+    .field-row .input{height:36px;flex:1}
+    .empty-fields{padding:19px;text-align:center;color:#9aaba0;font-size:12px}
+    .info-box{border-radius:12px;background:#f4f8f1;color:#718a77;padding:12px 14px;font-size:11px;line-height:1.8;margin-top:15px}
+    .backup-option{display:flex;gap:13px;align-items:flex-start;padding:15px 0;border-bottom:1px solid #eef2ee}
+    .backup-option:first-child{padding-top:0}
+    .backup-option:last-of-type{border-bottom:0}
+    .backup-icon{width:39px;height:39px;display:grid;place-items:center;background:#edf7ed;color:#6da57b;border-radius:11px}
+    .backup-copy{flex:1;min-width:0}
+    .backup-copy strong{font-size:12px;display:block}
+    .backup-copy p{color:#99a99c;font-size:11px;line-height:1.8;margin:4px 0 10px}
+    .backup-option .btn{min-height:36px;font-size:11px}
+    #print-dialog{width:min(96vw,1050px);background:#f3f6f2}
+    #print-dialog .dialog-head{background:#fff;padding-bottom:20px}
+    .preview-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:17px 22px}
+    .preview-toolbar p{margin:0;font-size:11px;color:#8d9f91}
+    .print-page{direction:rtl;background:white;margin:0 22px 24px;padding:30px;min-height:380px;border:1px solid #e7ece7;box-shadow:0 4px 14px rgba(24,47,31,.04)}
+    .print-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;border-bottom:2px solid #3c6a50;padding-bottom:16px;margin-bottom:16px}
+    .print-heading h3{margin:0;font-size:19px;color:#254a36}
+    .print-heading p{margin:4px 0 0;color:#819486;font-size:11px}
+    .print-heading .print-date{font-size:11px;color:#76897b}
+    .print-summary{font-size:11px;color:#718575;margin-bottom:15px}
+    .print-table{table-layout:auto;border:1px solid #dce5dd}
+    .print-table th,.print-table td{border:1px solid #dce5dd;padding:9px 10px;font-size:11px;white-space:normal;overflow-wrap:anywhere}
+    .print-table th{color:#456650;background:#f3f7f2}
+    .print-empty{text-align:center;font-size:12px;color:#a3b0a4;padding:35px}
+    .toast{position:fixed;bottom:24px;left:24px;z-index:50;background:#294c3a;color:white;border-radius:12px;padding:11px 16px;font-size:12px;box-shadow:0 8px 25px rgba(17,50,31,.2);opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s}
+    .toast.visible{opacity:1;transform:none}
+    @media(max-width:1000px){.app-shell{grid-template-columns:205px minmax(0,1fr)}.sidebar{padding-inline:15px}.main{padding-inline:25px}.hero-art{margin-left:0;flex-basis:190px}.hero-art:before{width:185px;height:185px}.hero-art:after{width:140px;height:140px}}
+    @media(max-width:700px){
+      .app-shell{display:block}.sidebar{display:none}.main{padding:18px 16px calc(100px + env(safe-area-inset-bottom))}
+      .topbar{margin-bottom:21px}.topbar-title,.topbar-sub{display:none}.mobile-brand{display:flex}.mobile-brand .brand-mark{width:38px;height:38px;border-radius:12px}.mobile-brand .brand-name{font-size:15px}.mobile-brand .brand-sub{font-size:9px}
+      .save-status{font-size:10px;padding:6px 9px}.hero{padding:22px 20px;min-height:0;border-radius:19px}.hero h1{font-size:21px}.hero p{font-size:11px;max-width:270px;line-height:1.9;margin-bottom:19px}.hero-art{flex-basis:75px;height:84px;margin-left:0}.hero-art:before{width:104px;height:104px}.hero-art:after{width:78px;height:78px}.hero-art-inner{width:62px;height:62px;border-radius:20px}.hero-art-inner svg{width:30px;height:30px}.spark.one{right:0;top:-4px}.spark.two{left:0;bottom:0}.eyebrow{font-size:10px}
+      .hero-actions{gap:7px}.hero-actions .btn{padding:0 11px;font-size:11px;min-height:40px}.hero-actions .btn .icon{width:15px;height:15px}
+      .stats{gap:8px;margin:13px 0}.stat{padding:13px 11px;min-height:83px;border-radius:14px}.stat-label{font-size:10px;white-space:nowrap}.stat-value{font-size:20px}.stat-value small{font-size:9px}.stat-icon{height:31px;width:31px;border-radius:10px}.stat-icon .icon{width:16px;height:16px}
+      .panel{border-radius:17px}.panel-top{padding:20px 17px 16px}.panel-top h2{font-size:15px}.panel-top p{font-size:11px}.panel-controls{padding:0 17px 15px}.panel-controls .btn{padding:0 11px;font-size:11px}.panel-foot{padding:12px 17px}.data-table{min-width:575px}th,td{padding-right:16px;padding-left:16px}.empty{padding:38px 20px}.footnote{display:none}
+      .mobile-nav{position:fixed;z-index:10;bottom:0;right:0;left:0;display:flex;justify-content:space-around;align-items:center;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);border-top:1px solid #eaf0eb;box-shadow:0 -5px 22px rgba(33,59,40,.04)}
+      .mobile-nav button{border:0;background:none;color:#718779;font-size:10px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px}
+      .mobile-nav button.active{color:var(--green)}.mobile-nav .icon{width:20px;height:20px}
+      .toast{bottom:calc(80px + env(safe-area-inset-bottom));left:16px;right:16px;text-align:center}
+      dialog{width:min(94vw,520px)}.dialog-head{padding:20px 18px 0}.dialog-body{padding:18px}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}
+      #print-dialog{width:96vw}.preview-toolbar{padding:13px}.preview-toolbar p{font-size:10px}.print-page{margin:0 12px 16px;padding:18px;overflow-x:auto}.print-table{min-width:500px}
+    }
+    @media(max-width:390px){.hero-art{display:none}.hero h1{font-size:20px}.stat-icon{display:none}.stat{padding:13px}.hero-actions .btn{padding:0 10px}.panel-controls{align-items:stretch}.panel-controls .btn{padding:0 8px}.panel-controls .btn .icon{display:none}}
+    @media print{
+      @page{size:A4 landscape;margin:12mm}
+      body{background:white;font-family:Tahoma,Arial,sans-serif}
+      body>.app-shell,body>.mobile-nav,body>.toast,body>dialog:not(#print-dialog){display:none!important}
+      #print-dialog[open]{display:block!important;position:absolute;inset:0;width:100%;height:auto;max-height:none;max-width:none;margin:0;padding:0;box-shadow:none;border:0;border-radius:0;overflow:visible;background:white}
+      #print-dialog::backdrop{display:none}
+      #print-dialog .dialog-head,#print-dialog .preview-toolbar{display:none!important}
+      .print-page{margin:0;padding:0;min-height:0;border:0;box-shadow:none;overflow:visible}
+      .print-table{min-width:0;width:100%}.print-table thead{display:table-header-group}
+      .print-table tr{break-inside:avoid}.print-table th,.print-table td{border:1px solid #aaa;color:#111;padding:7px}
+      .print-heading{border-color:#333}.print-heading h3,.print-heading p,.print-heading .print-date,.print-summary{color:#222}
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="القائمة الرئيسية">
+      <div class="brand">
+        <div class="brand-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2 5 13h6l-1 9 9-12h-6l1-8Z"/></svg></div>
+        <div><div class="brand-name">دفتر المولّدة</div><div class="brand-sub">إدارة أسهل، يوم بعد يوم</div></div>
+      </div>
+      <div class="side-label">القائمة الرئيسية</div>
+      <button type="button" class="nav-btn active" data-action="home"><svg class="icon" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-6v-6h-4v6H4a1 1 0 0 1-1-1Z"/></svg>سجل المشتركين</button>
+      <button type="button" class="nav-btn" data-action="fields"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg>تخصيص الحقول</button>
+      <button type="button" class="nav-btn" data-action="backup"><svg class="icon" viewBox="0 0 24 24"><path d="M4 15.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5M12 3v12M8 11l4 4 4-4"/></svg>النسخة الاحتياطية</button>
+      <div class="side-bottom"><div class="side-note"><div class="note-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg></div><strong>بياناتك على جهازك</strong><p>تُحفظ تلقائياً في هذا المتصفح. احتفظ بنسخة احتياطية لحماية بياناتك.</p></div></div>
+    </aside>
+    <main class="main"><div class="content">
+      <header class="topbar">
+        <div><div class="topbar-title">سجل المشتركين</div><div class="topbar-sub">مرحباً بك في مساحة عملك</div></div>
+        <div class="mobile-brand brand"><div class="brand-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2 5 13h6l-1 9 9-12h-6l1-8Z"/></svg></div><div><div class="brand-name">دفتر المولّدة</div><div class="brand-sub">إدارة أسهل، يوم بعد يوم</div></div></div>
+        <span class="save-status" id="save-status">حفظ تلقائي على هذا الجهاز</span>
+      </header>
+      <section class="hero" aria-labelledby="welcome-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span></span> كل شيء في مكان واحد</div>
+          <h1 id="welcome-title">دفتر مولّدتك، مرتّب وبسيط.</h1>
+          <p>أضف المشتركين، تابع الأمبيرات، وجهّز كشفك للطباعة بسهولة.</p>
+          <div class="hero-actions">
+            <button type="button" class="btn btn-primary" data-action="add"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>إضافة مشترك</button>
+            <button type="button" class="btn btn-white" data-action="preview"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6zM17.5 11.5h.01"/></svg>معاينة الطباعة</button>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true"><span class="spark one"></span><span class="spark two"></span><div class="hero-art-inner"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2 5 13h6l-1 9 9-12h-6l1-8Z"/></svg></div></div>
+      </section>
+      <section class="stats" aria-label="ملخص السجل">
+        <div class="stat"><div><div class="stat-label">المشتركون</div><div class="stat-value" id="stat-count">0</div></div><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M16 4.1a4 4 0 0 1 0 7.8M20 21v-2a4 4 0 0 0-3-3.9"/><circle cx="10" cy="7" r="4"/></svg></span></div>
+        <div class="stat"><div><div class="stat-label">إجمالي الأمبيرات</div><div class="stat-value"><span id="stat-amps">0</span><small>أمبير</small></div></div><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2 5 13h6l-1 9 9-12h-6l1-8Z"/></svg></span></div>
+        <div class="stat"><div><div class="stat-label">حقول إضافية</div><div class="stat-value"><span id="stat-fields">0</span><small>من 5</small></div></div><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg></span></div>
+      </section>
+      <section class="panel" id="subscribers" aria-labelledby="table-title">
+        <div class="panel-top"><div><h2 id="table-title">سجل المشتركين <span class="count-pill" id="count-pill">0 مشترك</span></h2><p>كل بيانات المشتركين في جدول واحد وسهل التعديل.</p></div></div>
+        <div class="panel-controls">
+          <div class="search-wrap"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input type="search" id="search" class="search" placeholder="ابحث عن مشترك..." aria-label="ابحث عن مشترك"></div>
+          <button type="button" class="btn btn-outline" data-action="fields"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg>تخصيص الحقول</button>
+        </div>
+        <div class="table-wrap"><table class="data-table"><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>
+        <div class="empty" id="empty-state" hidden><div class="empty-visual"><svg class="icon" viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v16H5V5a2 2 0 0 1 2-2Z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><h3 id="empty-title">لا يوجد مشتركون بعد</h3><p id="empty-text">ابدأ بإضافة أول مشترك إلى سجلك.</p><button type="button" class="btn btn-primary" data-action="add" id="empty-add"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>إضافة مشترك</button></div>
+        <div class="panel-foot"><span id="results-text">عرض 0 من 0 مشترك</span><span>اسحب الجدول جانبياً لعرض باقي الحقول</span></div>
+      </section>
+      <footer class="footnote"><span>دفتر المولّدة · مساحة أبسط لتنظيم اشتراكاتك</span><span>بياناتك محفوظة على هذا الجهاز</span></footer>
+    </div></main>
+  </div>
+  <nav class="mobile-nav" aria-label="القائمة الرئيسية">
+    <button type="button" class="active" data-action="home"><svg class="icon" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-6v-6h-4v6H4a1 1 0 0 1-1-1Z"/></svg>المشتركون</button>
+    <button type="button" data-action="fields"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg>الحقول</button>
+    <button type="button" data-action="preview"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>الطباعة</button>
+    <button type="button" data-action="backup"><svg class="icon" viewBox="0 0 24 24"><path d="M4 15.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5M12 3v12M8 11l4 4 4-4"/></svg>نسخة احتياطية</button>
+  </nav>
+
+  <dialog id="subscriber-dialog" aria-labelledby="subscriber-title">
+    <div class="dialog-head"><div><h2 id="subscriber-title">إضافة مشترك</h2><p>أدخل البيانات ثم اضغط على حفظ.</p></div><button class="icon-btn dialog-close" type="button" data-close="subscriber-dialog" aria-label="إغلاق"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
+    <form id="subscriber-form" class="dialog-body" novalidate>
+      <div class="form-grid">
+        <label class="field full"><span class="field-label">اسم المشترك <span class="required">*</span></span><input class="input" id="subscriber-name" maxlength="100" placeholder="مثال: أحمد علي" autocomplete="name" required></label>
+        <label class="field full"><span class="field-label">عدد الأمبيرات <span class="required">*</span></span><input class="input" id="subscriber-amps" inputmode="decimal" maxlength="16" placeholder="مثال: 5" required><p class="hint">يمكنك إدخال رقم صحيح أو عشري.</p></label>
+        <div id="extra-form-fields" class="full form-grid"></div>
+      </div>
+      <p class="error-message" id="subscriber-error" role="alert"></p>
+      <div class="dialog-actions"><button type="button" class="btn btn-outline" data-close="subscriber-dialog">إلغاء</button><button type="submit" class="btn btn-primary">حفظ المشترك</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="fields-dialog" aria-labelledby="fields-title">
+    <div class="dialog-head"><div><h2 id="fields-title">تخصيص الحقول</h2><p>أضف حتى 5 حقول لتناسب طريقة عملك.</p></div><button class="icon-btn dialog-close" type="button" data-close="fields-dialog" aria-label="إغلاق"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
+    <div class="dialog-body">
+      <form class="field-add" id="field-form"><label class="field"><span class="field-label">اسم الحقل الجديد</span><input class="input" id="new-field" maxlength="40" placeholder="مثال: رقم الهاتف" required></label><button type="submit" class="btn btn-primary" id="add-field-button">إضافة</button></form>
+      <p class="error-message" id="field-error" role="alert"></p>
+      <div class="field-list" id="field-list"></div>
+      <div class="info-box">تظهر الحقول الجديدة في الجدول وعند إضافة المشترك أو تعديله. حذف أي حقل يحذف بياناته من جميع المشتركين.</div>
+      <div class="dialog-actions"><button type="button" class="btn btn-outline" data-close="fields-dialog">تم</button></div>
+    </div>
+  </dialog>
+
+  <dialog id="backup-dialog" aria-labelledby="backup-title">
+    <div class="dialog-head"><div><h2 id="backup-title">النسخة الاحتياطية</h2><p>احتفظ بنسخة من سجلك أو استعد نسخة سابقة.</p></div><button class="icon-btn dialog-close" type="button" data-close="backup-dialog" aria-label="إغلاق"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
+    <div class="dialog-body">
+      <div class="backup-option"><span class="backup-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 15.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5M12 3v12M8 11l4 4 4-4"/></svg></span><div class="backup-copy"><strong>حفظ نسخة احتياطية</strong><p>نزّل ملفاً يحتوي على المشتركين والحقول الإضافية.</p><button type="button" class="btn btn-outline" id="export-button">تنزيل النسخة</button></div></div>
+      <div class="backup-option"><span class="backup-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 15.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5M12 16V4M8 8l4-4 4 4"/></svg></span><div class="backup-copy"><strong>استعادة نسخة احتياطية</strong><p>اختر ملف نسخة محفوظة سابقاً. ستستبدل بياناتك الحالية بعد تأكيدك.</p><button type="button" class="btn btn-outline" id="import-button">اختيار ملف</button><input type="file" id="import-file" accept=".json,application/json" hidden></div></div>
+      <div class="info-box">البيانات محفوظة في متصفح هذا الجهاز فقط، ولا تنتقل تلقائياً بين الأجهزة. يُنصح بتنزيل نسخة احتياطية بشكل دوري.</div>
+    </div>
+  </dialog>
+
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title">
+    <div class="dialog-head"><div><h2 id="confirm-title"></h2><p id="confirm-description"></p></div></div>
+    <form method="dialog" class="dialog-body"><div class="dialog-actions"><button class="btn btn-outline" value="cancel">إلغاء</button><button class="btn btn-danger" id="confirm-accept" value="confirm">تأكيد</button></div></form>
+  </dialog>
+
+  <dialog id="print-dialog" aria-labelledby="print-title">
+    <div class="dialog-head"><div><h2 id="print-title">معاينة قبل الطباعة</h2><p>راجع الكشف قبل إرساله إلى الطابعة.</p></div><button class="icon-btn dialog-close" type="button" data-close="print-dialog" aria-label="إغلاق"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
+    <div class="preview-toolbar"><p>يشمل الكشف جميع المشتركين والحقول المضافة.</p><button type="button" class="btn btn-primary" id="print-button"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>طباعة الكشف</button></div>
+    <div class="print-page" id="print-page"></div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const KEY = 'daftar_molida_v1';
+      const $ = (id) => document.getElementById(id);
+      const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+      const uid = () => (globalThis.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'id-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+      const fmt = (v) => new Intl.NumberFormat('ar-IQ', {maximumFractionDigits: 3}).format(v);
+      const icons = {
+        edit:'<svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg>',
+        delete:'<svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13h12l1-13M9 7V4h6v3"/></svg>'
+      };
+      let state = {version:1, fields:[], subscribers:[]};
+      let storageWorks = true, editingId = null, toastTimer;
+      try {
+        const saved = localStorage.getItem(KEY);
+        if (saved) state = validateData(JSON.parse(saved));
+      } catch (error) {
+        storageWorks = false;
+        console.error('Unable to read saved data', error);
+      }
+      function validateData(data) {
+        if (!data || data.version !== 1 || !Array.isArray(data.fields) || !Array.isArray(data.subscribers) || data.fields.length > 5 || data.subscribers.length > 10000) throw new Error('invalid');
+        const fieldIds = new Set(), rowIds = new Set();
+        const fields = data.fields.map(f => {
+          if (!f || typeof f.id !== 'string' || !f.id || f.id.length > 100 || fieldIds.has(f.id) || typeof f.label !== 'string' || !f.label.trim() || f.label.length > 40) throw new Error('invalid');
+          fieldIds.add(f.id); return {id:f.id, label:f.label.trim()};
+        });
+        const subscribers = data.subscribers.map(row => {
+          if (!row || typeof row.id !== 'string' || !row.id || row.id.length > 100 || rowIds.has(row.id) || typeof row.name !== 'string' || !row.name.trim() || row.name.length > 100 || typeof row.amps !== 'number' || !Number.isFinite(row.amps) || row.amps <= 0 || row.amps > 100000) throw new Error('invalid');
+          rowIds.add(row.id);
+          if (row.values !== undefined && (!row.values || typeof row.values !== 'object' || Array.isArray(row.values))) throw new Error('invalid');
+          const values = {};
+          for (const field of fields) {
+            const value = row.values?.[field.id] ?? '';
+            if (typeof value !== 'string' || value.length > 200) throw new Error('invalid');
+            values[field.id] = value;
+          }
+          return {id:row.id, name:row.name.trim(), amps:row.amps, values};
+        });
+        return {version:1, fields, subscribers};
+      }
+      function save() {
+        try { localStorage.setItem(KEY, JSON.stringify(state)); storageWorks = true; }
+        catch (error) { storageWorks = false; console.error('Unable to save data', error); }
+        updateStatus();
+      }
+      function updateStatus() {
+        $('save-status').textContent = storageWorks ? 'حفظ تلقائي على هذا الجهاز' : 'تعذّر الحفظ على الجهاز';
+        $('save-status').classList.toggle('error', !storageWorks);
+      }
+      function toast(message) {
+        $('toast').textContent = message; $('toast').classList.add('visible');
+        clearTimeout(toastTimer); toastTimer = setTimeout(() => $('toast').classList.remove('visible'), 2600);
+      }
+      function arabicNumber(value) {
+        return String(value).trim().replace(/[٠-٩]/g, c => String(c.charCodeAt(0)-1632)).replace(/[۰-۹]/g, c => String(c.charCodeAt(0)-1776)).replace(/٫/g,'.').replace(/٬/g,'').replace(/,/g,'.').replace(/\s/g,'');
+      }
+      function render() {
+        const count = state.subscribers.length;
+        const sum = state.subscribers.reduce((total, row) => total + row.amps, 0);
+        $('stat-count').textContent = fmt(count); $('stat-amps').textContent = fmt(sum); $('stat-fields').textContent = fmt(state.fields.length);
+        $('count-pill').textContent = fmt(count) + ' مشترك';
+        const term = $('search').value.trim().toLocaleLowerCase('ar');
+        const rows = state.subscribers.map((row,index) => ({row,index})).filter(({row}) => !term || [row.name, ...Object.values(row.values)].some(value => value.toLocaleLowerCase('ar').includes(term)));
+        $('table-head').innerHTML = '<tr><th scope="col">التسلسل</th><th scope="col">اسم المشترك</th><th scope="col">الأمبيرات</th>' + state.fields.map(f => '<th scope="col">'+escapeHTML(f.label)+'</th>').join('') + '<th scope="col">الإجراءات</th></tr>';
+        $('table-body').innerHTML = rows.map(({row,index}) => '<tr><td class="row-number">'+fmt(index+1)+'</td><td class="name-cell">'+escapeHTML(row.name)+'</td><td><span class="amp-pill">'+fmt(row.amps)+' أمبير</span></td>'+state.fields.map(f=>'<td>'+escapeHTML(row.values[f.id] || '—')+'</td>').join('')+'<td><div class="row-actions"><button type="button" class="icon-btn" data-edit="'+escapeHTML(row.id)+'" aria-label="تعديل '+escapeHTML(row.name)+'">'+icons.edit+'</button><button type="button" class="icon-btn delete" data-delete="'+escapeHTML(row.id)+'" aria-label="حذف '+escapeHTML(row.name)+'">'+icons.delete+'</button></div></td></tr>').join('');
+        $('empty-state').hidden = rows.length > 0;
+        $('empty-title').textContent = count && term ? 'لا توجد نتائج' : 'لا يوجد مشتركون بعد';
+        $('empty-text').textContent = count && term ? 'جرّب البحث باسم أو كلمة أخرى.' : 'ابدأ بإضافة أول مشترك إلى سجلك.';
+        $('empty-add').hidden = Boolean(count && term);
+        $('results-text').textContent = 'عرض '+fmt(rows.length)+' من '+fmt(count)+' مشترك';
+        updateStatus();
+      }
+      function openSubscriber(id = null) {
+        const row = state.subscribers.find(x => x.id === id);
+        editingId = row ? id : null;
+        $('subscriber-title').textContent = row ? 'تعديل المشترك' : 'إضافة مشترك';
+        $('subscriber-name').value = row?.name || '';
+        $('subscriber-amps').value = row ? String(row.amps) : '';
+        $('extra-form-fields').innerHTML = state.fields.map((f,i) => '<label class="field full"><span class="field-label">'+escapeHTML(f.label)+'</span><input class="input extra-input" data-field-index="'+i+'" maxlength="200" placeholder="أدخل '+escapeHTML(f.label)+'" value="'+escapeHTML(row?.values[f.id] || '')+'"></label>').join('');
+        $('subscriber-error').textContent = '';
+        $('subscriber-dialog').showModal();
+        setTimeout(() => $('subscriber-name').focus(), 50);
+      }
+      $('subscriber-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const name = $('subscriber-name').value.trim(), raw = arabicNumber($('subscriber-amps').value), amps = Number(raw);
+        if (!name) { $('subscriber-error').textContent='يرجى إدخال اسم المشترك.'; $('subscriber-name').focus(); return; }
+        if (!raw || !/^\d+(?:\.\d+)?$/.test(raw) || !Number.isFinite(amps) || amps <= 0 || amps > 100000) { $('subscriber-error').textContent='يرجى إدخال عدد أمبيرات صحيح أكبر من صفر.'; $('subscriber-amps').focus(); return; }
+        const values = {};
+        document.querySelectorAll('#extra-form-fields .extra-input').forEach(input => { const f = state.fields[Number(input.dataset.fieldIndex)]; if (f) values[f.id] = input.value.trim(); });
+        if (editingId) {
+          const row = state.subscribers.find(x => x.id === editingId);
+          if (!row) return;
+          Object.assign(row, {name, amps, values});
+        } else state.subscribers.push({id:uid(), name, amps, values});
+        save(); render(); $('subscriber-dialog').close(); toast(editingId ? 'تم حفظ التعديلات' : 'تمت إضافة المشترك');
+      });
+      function renderFields() {
+        const full = state.fields.length >= 5;
+        $('add-field-button').disabled = full; $('new-field').disabled = full;
+        $('new-field').placeholder = full ? 'وصلت إلى الحد الأقصى' : 'مثال: رقم الهاتف';
+        $('field-list').innerHTML = state.fields.length ? state.fields.map((field,index) => '<div class="field-row"><span class="field-index">'+fmt(index+1)+'</span><strong>'+escapeHTML(field.label)+'</strong><button type="button" class="icon-btn" data-field-edit="'+escapeHTML(field.id)+'" aria-label="تعديل حقل '+escapeHTML(field.label)+'">'+icons.edit+'</button><button type="button" class="icon-btn delete" data-field-delete="'+escapeHTML(field.id)+'" aria-label="حذف حقل '+escapeHTML(field.label)+'">'+icons.delete+'</button></div>').join('') : '<div class="empty-fields">لم تضف حقولاً بعد.</div>';
+      }
+      $('field-form').addEventListener('submit', (event) => {
+        event.preventDefault(); const input=$('new-field'), label=input.value.trim();
+        if (!label) { $('field-error').textContent='يرجى إدخال اسم الحقل.'; input.focus(); return; }
+        if (state.fields.length >= 5) { $('field-error').textContent='يمكن إضافة 5 حقول كحد أقصى.'; return; }
+        if (state.fields.some(f=>f.label.toLocaleLowerCase('ar')===label.toLocaleLowerCase('ar'))) { $('field-error').textContent='اسم الحقل مستخدم بالفعل.'; return; }
+        state.fields.push({id:uid(), label}); input.value=''; $('field-error').textContent=''; save(); render(); renderFields(); toast('تمت إضافة الحقل');
+      });
+      async function confirmAction(title, description, buttonText) {
+        const dialog = $('confirm-dialog');
+        $('confirm-title').textContent=title; $('confirm-description').textContent=description; $('confirm-accept').textContent=buttonText;
+        dialog.returnValue = '';
+        dialog.showModal();
+        return new Promise(resolve => dialog.addEventListener('close', () => resolve(dialog.returnValue === 'confirm'), {once:true}));
+      }
+      $('field-list').addEventListener('click', async event => {
+        const deleteButton=event.target.closest('[data-field-delete]');
+        if (deleteButton) {
+          const field=state.fields.find(f=>f.id===deleteButton.dataset.fieldDelete); if(!field)return;
+          const ok=await confirmAction('حذف الحقل؟','سيتم حذف حقل «'+field.label+'» وبياناته من جميع المشتركين. لا يمكن التراجع عن ذلك.','حذف الحقل');
+          if(!ok)return;
+          state.fields=state.fields.filter(f=>f.id!==field.id); state.subscribers.forEach(row=>delete row.values[field.id]);
+          save();render();renderFields();toast('تم حذف الحقل');return;
+        }
+        const editButton=event.target.closest('[data-field-edit]');
+        if(!editButton)return;
+        const field=state.fields.find(f=>f.id===editButton.dataset.fieldEdit); if(!field)return;
+        const row=editButton.closest('.field-row'), strong=row.querySelector('strong'), input=document.createElement('input');
+        input.className='input'; input.maxLength=40; input.value=field.label; input.setAttribute('aria-label','اسم الحقل'); strong.replaceWith(input);
+        const finish = () => {
+          const value=input.value.trim();
+          if(value && !state.fields.some(f=>f.id!==field.id && f.label.toLocaleLowerCase('ar')===value.toLocaleLowerCase('ar'))) {
+            field.label=value; $('field-error').textContent=''; save(); render(); renderFields(); toast('تم تعديل اسم الحقل');
+          } else { $('field-error').textContent='أدخل اسماً غير مكرر للحقل.'; renderFields(); }
+        };
+        input.addEventListener('keydown', e=>{if(e.key==='Enter'){e.preventDefault();input.blur();} if(e.key==='Escape'){renderFields();}});
+        input.addEventListener('blur', finish, {once:true}); input.focus(); input.select();
+      });
+      $('table-body').addEventListener('click', async event => {
+        const edit=event.target.closest('[data-edit]'), del=event.target.closest('[data-delete]');
+        if(edit) { openSubscriber(edit.dataset.edit); return; }
+        if(del) {
+          const row=state.subscribers.find(x=>x.id===del.dataset.delete); if(!row)return;
+          if(await confirmAction('حذف المشترك؟','سيتم حذف «'+row.name+'» من السجل. لا يمكن التراجع عن ذلك.','حذف المشترك')) {
+            state.subscribers=state.subscribers.filter(x=>x.id!==row.id); save();render();toast('تم حذف المشترك');
+          }
+        }
+      });
+      function openFields() { $('field-error').textContent=''; $('new-field').value=''; renderFields(); $('fields-dialog').showModal(); }
+      function buildPrint() {
+        const date = new Intl.DateTimeFormat('ar-IQ',{year:'numeric',month:'long',day:'numeric'}).format(new Date());
+        const sum = state.subscribers.reduce((n,r)=>n+r.amps,0);
+        $('print-page').innerHTML = '<div class="print-heading"><div><h3>كشف المشتركين</h3><p>دفتر المولّدة</p></div><div class="print-date">تاريخ الكشف: '+escapeHTML(date)+'</div></div><div class="print-summary">عدد المشتركين: '+fmt(state.subscribers.length)+' &nbsp;&nbsp; | &nbsp;&nbsp; إجمالي الأمبيرات: '+fmt(sum)+' أمبير</div><table class="print-table"><thead><tr><th>التسلسل</th><th>اسم المشترك</th><th>الأمبيرات</th>'+state.fields.map(f=>'<th>'+escapeHTML(f.label)+'</th>').join('')+'</tr></thead><tbody>'+state.subscribers.map((row,index)=>'<tr><td>'+fmt(index+1)+'</td><td>'+escapeHTML(row.name)+'</td><td>'+fmt(row.amps)+'</td>'+state.fields.map(f=>'<td>'+escapeHTML(row.values[f.id] || '—')+'</td>').join('')+'</tr>').join('')+'</tbody></table>'+(state.subscribers.length ? '' : '<div class="print-empty">لا توجد بيانات في السجل بعد.</div>');
+      }
+      document.addEventListener('click', event => {
+        const close=event.target.closest('[data-close]');
+        if(close) { $(close.dataset.close).close(); return; }
+        const button=event.target.closest('[data-action]'); if(!button)return;
+        switch(button.dataset.action) {
+          case 'home': $('subscribers').scrollIntoView({behavior:'smooth',block:'start'}); break;
+          case 'add': openSubscriber(); break;
+          case 'fields': openFields(); break;
+          case 'backup': $('backup-dialog').showModal(); break;
+          case 'preview': buildPrint(); $('print-dialog').showModal(); break;
+        }
+      });
+      $('search').addEventListener('input', render);
+      $('print-button').addEventListener('click', () => window.print());
+      $('export-button').addEventListener('click', () => {
+        const blob=new Blob([JSON.stringify({...state, exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+        const url=URL.createObjectURL(blob), link=document.createElement('a');
+        link.href=url; link.download='generator-backup-'+new Date().toISOString().slice(0,10)+'.json'; document.body.append(link); link.click(); link.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000); toast('تم تنزيل النسخة الاحتياطية');
+      });
+      $('import-button').addEventListener('click', ()=>$('import-file').click());
+      $('import-file').addEventListener('change', async event => {
+        const file=event.target.files?.[0]; event.target.value=''; if(!file)return;
+        try {
+          if(file.size>5*1024*1024) throw new Error('size');
+          const imported=validateData(JSON.parse(await file.text()));
+          const ok=await confirmAction('استعادة النسخة؟','سيتم استبدال السجل الحالي بالكامل بـ '+fmt(imported.subscribers.length)+' مشترك من الملف.','استعادة النسخة');
+          if(!ok)return;
+          state=imported; $('search').value=''; save(); render(); $('backup-dialog').close(); toast('تمت استعادة النسخة الاحتياطية');
+        } catch(error) { toast('تعذّرت الاستعادة: ملف النسخة غير صالح'); }
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>
