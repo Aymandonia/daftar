@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f6f8f5">
   <meta name="description" content="دفتر بسيط لإدارة مشتركي المولّدة والأمبيرات ومعاينة كشف الطباعة.">
-  <title>دفتر المولّدة | سجل المشتركين</title>
+  <title>دفتر المولّدة | اللوحات والفيزات</title>
   <style>
     :root{--green:#126b55;--green-dark:#0e5142;--mint:#e6f2e8;--ink:#1f332c;--muted:#788b81;--line:#e5ece7;--bg:#f5f7f3;--white:#fff;--danger:#b54848;--shadow:0 12px 32px rgba(25,61,46,.045)}
     *{box-sizing:border-box}
@@ -192,6 +192,15 @@
       .print-table tr{break-inside:avoid}.print-table th,.print-table td{border:1px solid #aaa;color:#111;padding:7px}
       .print-heading{border-color:#333}.print-heading h3,.print-heading p,.print-heading .print-date,.print-summary{color:#222}
     }
+
+    .folder-section{margin:22px 0}.folder-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}.folder-top h2{font-size:18px;margin:0}.folder-top p{font-size:12px;color:#718879;margin:4px 0 0}
+    .breadcrumbs{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:17px;font-size:12px;color:#718879}.breadcrumbs button{border:0;background:white;border-radius:9px;color:var(--green);padding:7px 12px;font-weight:700}
+    .folder-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:15px}.folder-card{background:#fff;border:1px solid #e0ebe1;border-radius:17px;overflow:hidden;box-shadow:var(--shadow)}.folder-open{display:block;width:100%;border:0;background:transparent;text-align:right;padding:22px;color:var(--ink)}.folder-open:hover{background:#f4faf3}.folder-symbol{display:inline-flex;align-items:center;justify-content:center;width:46px;height:42px;border-radius:12px;background:#e9f4e8;color:var(--green);margin-bottom:13px}.folder-symbol .icon{width:27px;height:27px}.folder-open strong{display:block;font-size:17px;overflow-wrap:anywhere}.folder-open small{display:block;color:#7e9384;margin-top:7px;font-size:11px}.folder-total{margin-top:12px;font-weight:700;font-size:14px;color:var(--green)}.folder-tools{border-top:1px solid #edf2ec;padding:5px 13px;display:flex;justify-content:flex-end;gap:5px}.folder-tools button{font-size:11px;color:#718879;background:none;border:0;padding:7px 9px;border-radius:8px}.folder-tools button:hover{background:#eff6ee}.folder-tools .danger{color:var(--danger)}
+    .context-summary{background:#eef6ec;border:1px solid #e1edde;padding:13px 17px;border-radius:12px;margin:12px 0 18px;display:flex;gap:20px;flex-wrap:wrap;font-size:12px;color:#436a4c}.context-summary strong{color:var(--green)}
+    .phase-top{padding:23px 25px;border-bottom:1px solid var(--line)}.phase-top h2{margin:0 0 14px;font-size:18px}.title-edit{display:flex;gap:9px;align-items:flex-end;flex-wrap:wrap}.title-edit label{flex:1;min-width:180px}.title-edit .input{background:#f9fcf8}.phase-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}.phase-note{font-size:11px;color:#718879;margin:12px 0 0}.phase-total{background:#f1f8ef;font-weight:700;color:#345e40}.phase-total td{border-top:2px solid #cee0cd;color:#345e40}.print-total td{font-weight:700;background:#eef5eb;border-top:2px solid #456650}.print-summary{font-size:13px;line-height:1.9}.bulk-input{width:100%;min-height:180px;padding:12px;font:inherit;line-height:1.8;resize:vertical;border:1px solid var(--line);border-radius:10px}.summary-scope{font-size:11px;color:#718879;margin-bottom:0}.folder-empty{padding:32px;text-align:center;color:#718879;border:1px dashed #cadbc9;border-radius:15px;background:white}
+    @media(max-width:700px){.folder-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.folder-open{padding:16px}.folder-open strong{font-size:15px}.folder-open small{font-size:10px}.folder-total{font-size:12px}.folder-tools{padding-inline:3px}.folder-tools button{font-size:10px;padding:7px}.phase-top{padding:18px 17px}.phase-actions .btn{font-size:11px;padding:0 12px}.context-summary{gap:10px}.folder-top h2{font-size:16px}.print-heading{gap:10px}.print-heading h3{overflow-wrap:anywhere}}
+    @media(max-width:700px){.stats .stat-icon{display:none}.stat{min-width:0}.stat-label{white-space:normal;line-height:1.5}.stat-value{overflow-wrap:anywhere}}
+    @media print{.print-heading{break-inside:avoid}.print-summary{break-inside:avoid}.print-total td{background:#eee!important;print-color-adjust:exact}.print-table tfoot{display:table-row-group}.print-heading h3{max-width:190mm;overflow-wrap:anywhere}}
   </style>
 </head>
 <body>
@@ -202,7 +211,7 @@
         <div><div class="brand-name">دفتر المولّدة</div><div class="brand-sub">إدارة أسهل، يوم بعد يوم</div></div>
       </div>
       <div class="side-label">القائمة الرئيسية</div>
-      <button type="button" class="nav-btn active" data-action="home"><svg class="icon" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-6v-6h-4v6H4a1 1 0 0 1-1-1Z"/></svg>سجل المشتركين</button>
+      <button type="button" class="nav-btn active" data-action="home"><svg class="icon" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-6v-6h-4v6H4a1 1 0 0 1-1-1Z"/></svg>اللوحات والفيزات</button>
       <button type="button" class="nav-btn" data-action="fields"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg>تخصيص الحقول</button>
       <button type="button" class="nav-btn" data-action="backup"><svg class="icon" viewBox="0 0 24 24"><path d="M4 15.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5M12 3v12M8 11l4 4 4-4"/></svg>النسخة الاحتياطية</button>
       <div class="side-bottom"><div class="side-note"><div class="note-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg></div><strong>بياناتك على جهازك</strong><p>تُحفظ تلقائياً في هذا المتصفح. احتفظ بنسخة احتياطية لحماية بياناتك.</p></div></div>
@@ -217,26 +226,43 @@
         <div class="hero-copy">
           <div class="eyebrow"><span></span> كل شيء في مكان واحد</div>
           <h1 id="welcome-title">دفتر مولّدتك، مرتّب وبسيط.</h1>
-          <p>أضف المشتركين، تابع الأمبيرات، وجهّز كشفك للطباعة بسهولة.</p>
+          <p>نظّم المشتركين حسب اللوحة والفيز، وجهّز كشف PDF لكل فيز بعنوانك الخاص.</p>
           <div class="hero-actions">
-            <button type="button" class="btn btn-primary" data-action="add"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>إضافة مشترك</button>
-            <button type="button" class="btn btn-white" data-action="preview"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6zM17.5 11.5h.01"/></svg>معاينة الطباعة</button>
+            <button type="button" class="btn btn-primary" data-action="newboard"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>إضافة لوحة</button>
+            <button type="button" class="btn btn-white" data-action="home"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6zM17.5 11.5h.01"/></svg>عرض اللوحات</button>
           </div>
         </div>
         <div class="hero-art" aria-hidden="true"><span class="spark one"></span><span class="spark two"></span><div class="hero-art-inner"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2 5 13h6l-1 9 9-12h-6l1-8Z"/></svg></div></div>
       </section>
       <section class="stats" aria-label="ملخص السجل">
-        <div class="stat"><div><div class="stat-label">المشتركون</div><div class="stat-value" id="stat-count">0</div></div><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M16 4.1a4 4 0 0 1 0 7.8M20 21v-2a4 4 0 0 0-3-3.9"/><circle cx="10" cy="7" r="4"/></svg></span></div>
-        <div class="stat"><div><div class="stat-label">إجمالي الأمبيرات</div><div class="stat-value"><span id="stat-amps">0</span><small>أمبير</small></div></div><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2 5 13h6l-1 9 9-12h-6l1-8Z"/></svg></span></div>
-        <div class="stat"><div><div class="stat-label">حقول إضافية</div><div class="stat-value"><span id="stat-fields">0</span><small>من 5</small></div></div><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg></span></div>
+        <div class="stat"><div><div class="stat-label">جميع المشتركين</div><div class="stat-value" id="stat-count">0</div></div><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M16 4.1a4 4 0 0 1 0 7.8M20 21v-2a4 4 0 0 0-3-3.9"/><circle cx="10" cy="7" r="4"/></svg></span></div>
+        <div class="stat"><div><div class="stat-label">أمبيرات جميع اللوحات</div><div class="stat-value"><span id="stat-amps">0</span><small>أمبير</small></div></div><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2 5 13h6l-1 9 9-12h-6l1-8Z"/></svg></span></div>
+        <div class="stat"><div><div class="stat-label">اللوحات / الفيزات</div><div class="stat-value"><span id="stat-boards">0</span> / <span id="stat-phases">0</span></div></div><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span></div>
+      </section>
+
+      <section class="folder-section" aria-label="اللوحات والفيزات">
+        <nav class="breadcrumbs" id="breadcrumbs" aria-label="مسار المجلدات"></nav>
+        <div id="folder-view">
+          <div class="folder-top"><div><h2 id="folder-title">اللوحات</h2><p id="folder-description">اختر لوحة لعرض الفيزات الموجودة داخلها.</p></div><button type="button" class="btn btn-primary" id="new-folder-button">+ إضافة لوحة</button></div>
+          <div class="context-summary" id="board-summary" hidden></div>
+          <div class="folder-grid" id="folder-grid"></div>
+        </div>
       </section>
       <section class="panel" id="subscribers" aria-labelledby="table-title">
-        <div class="panel-top"><div><h2 id="table-title">سجل المشتركين <span class="count-pill" id="count-pill">0 مشترك</span></h2><p>كل بيانات المشتركين في جدول واحد وسهل التعديل.</p></div></div>
+        <div class="phase-top">
+          <h2 id="phase-heading"></h2>
+          <div class="title-edit"><label class="field"><span class="field-label">عنوان الكشف وملف PDF — اكتب النص الذي تريده</span><input class="input" id="report-title" maxlength="180" placeholder="مثال: اشتراكات شهر تشرين الأول" autocomplete="off"></label><button type="button" class="btn btn-outline" id="save-title">حفظ العنوان</button></div>
+          <p class="hint" id="title-status" aria-live="polite">يُحفظ العنوان تلقائياً، ويظهر داخل كشف PDF.</p>
+          <div class="context-summary" id="phase-summary"></div>
+          <div class="phase-actions"><button type="button" class="btn btn-primary" data-action="add">+ إضافة مشترك</button><button type="button" class="btn btn-outline" data-action="bulk">لصق أسماء وأمبيرات</button><button type="button" class="btn btn-primary" data-action="preview">معاينة وحفظ PDF لهذا الفيز</button></div>
+          <p class="phase-note">الكشف يشمل جميع مشتركي هذا الفيز ومجموع أمبيراتهم، حتى عند استخدام البحث.</p>
+        </div>
+        <div class="panel-top"><h2 id="table-title">مشتركو الفيز <span class="count-pill" id="count-pill">0 مشترك</span></h2></div>
         <div class="panel-controls">
           <div class="search-wrap"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input type="search" id="search" class="search" placeholder="ابحث عن مشترك..." aria-label="ابحث عن مشترك"></div>
           <button type="button" class="btn btn-outline" data-action="fields"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg>تخصيص الحقول</button>
         </div>
-        <div class="table-wrap"><table class="data-table"><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>
+        <div class="table-wrap"><table class="data-table"><thead id="table-head"></thead><tbody id="table-body"></tbody><tfoot id="table-total"></tfoot></table></div>
         <div class="empty" id="empty-state" hidden><div class="empty-visual"><svg class="icon" viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v16H5V5a2 2 0 0 1 2-2Z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><h3 id="empty-title">لا يوجد مشتركون بعد</h3><p id="empty-text">ابدأ بإضافة أول مشترك إلى سجلك.</p><button type="button" class="btn btn-primary" data-action="add" id="empty-add"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>إضافة مشترك</button></div>
         <div class="panel-foot"><span id="results-text">عرض 0 من 0 مشترك</span><span>اسحب الجدول جانبياً لعرض باقي الحقول</span></div>
       </section>
@@ -244,9 +270,9 @@
     </div></main>
   </div>
   <nav class="mobile-nav" aria-label="القائمة الرئيسية">
-    <button type="button" class="active" data-action="home"><svg class="icon" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-6v-6h-4v6H4a1 1 0 0 1-1-1Z"/></svg>المشتركون</button>
+    <button type="button" class="active" data-action="home"><svg class="icon" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-6v-6h-4v6H4a1 1 0 0 1-1-1Z"/></svg>اللوحات</button>
     <button type="button" data-action="fields"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg>الحقول</button>
-    <button type="button" data-action="preview"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>الطباعة</button>
+    <button type="button" data-action="preview"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>PDF</button>
     <button type="button" data-action="backup"><svg class="icon" viewBox="0 0 24 24"><path d="M4 15.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5M12 3v12M8 11l4 4 4-4"/></svg>نسخة احتياطية</button>
   </nav>
 
@@ -277,20 +303,29 @@
   <dialog id="backup-dialog" aria-labelledby="backup-title">
     <div class="dialog-head"><div><h2 id="backup-title">النسخة الاحتياطية</h2><p>احتفظ بنسخة من سجلك أو استعد نسخة سابقة.</p></div><button class="icon-btn dialog-close" type="button" data-close="backup-dialog" aria-label="إغلاق"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
     <div class="dialog-body">
-      <div class="backup-option"><span class="backup-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 15.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5M12 3v12M8 11l4 4 4-4"/></svg></span><div class="backup-copy"><strong>حفظ نسخة احتياطية</strong><p>نزّل ملفاً يحتوي على المشتركين والحقول الإضافية.</p><button type="button" class="btn btn-outline" id="export-button">تنزيل النسخة</button></div></div>
+      <div class="backup-option"><span class="backup-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 15.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5M12 3v12M8 11l4 4 4-4"/></svg></span><div class="backup-copy"><strong>حفظ نسخة احتياطية</strong><p>نزّل نسخة JSON تشمل جميع اللوحات والفيزات والعناوين والمشتركين والحقول الإضافية.</p><button type="button" class="btn btn-outline" id="export-button">تنزيل النسخة</button></div></div>
       <div class="backup-option"><span class="backup-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 15.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5M12 16V4M8 8l4-4 4 4"/></svg></span><div class="backup-copy"><strong>استعادة نسخة احتياطية</strong><p>اختر ملف نسخة محفوظة سابقاً. ستستبدل بياناتك الحالية بعد تأكيدك.</p><button type="button" class="btn btn-outline" id="import-button">اختيار ملف</button><input type="file" id="import-file" accept=".json,application/json" hidden></div></div>
       <div class="info-box">البيانات محفوظة في متصفح هذا الجهاز فقط، ولا تنتقل تلقائياً بين الأجهزة. يُنصح بتنزيل نسخة احتياطية بشكل دوري.</div>
     </div>
   </dialog>
 
+
+  <dialog id="folder-dialog" aria-labelledby="folder-dialog-title">
+    <div class="dialog-head"><h2 id="folder-dialog-title"></h2><button type="button" class="icon-btn" data-close="folder-dialog" aria-label="إغلاق">×</button></div>
+    <form id="folder-form" class="dialog-body" novalidate><label class="field"><span class="field-label">الاسم</span><input class="input" id="folder-name" maxlength="60" required></label><p class="error-message" id="folder-error" role="alert"></p><div class="dialog-actions"><button type="button" class="btn btn-outline" data-close="folder-dialog">إلغاء</button><button type="submit" class="btn btn-primary">حفظ</button></div></form>
+  </dialog>
+  <dialog id="bulk-dialog" aria-labelledby="bulk-title">
+    <div class="dialog-head"><h2 id="bulk-title">إضافة عدة مشتركين</h2><button type="button" class="icon-btn" data-close="bulk-dialog" aria-label="إغلاق">×</button></div>
+    <form id="bulk-form" class="dialog-body" novalidate><p class="hint">الصق عمود الاسم ثم عمود الأمبيرات من جدول، أو اكتب كل مشترك في سطر بالشكل: أحمد علي؛ 5<br>الفاصل المقبول: تبويب، أو ؛ أو فاصلة إنكليزية. تُضاف الصفوف إلى الفيز الحالي.</p><label class="field"><span class="field-label">الأسماء والأمبيرات</span><textarea id="bulk-input" class="bulk-input" maxlength="1000000" placeholder="أحمد علي؛ 5&#10;حسين محمد؛ 10"></textarea></label><p class="error-message" id="bulk-error" role="alert"></p><div class="dialog-actions"><button type="button" class="btn btn-outline" data-close="bulk-dialog">إلغاء</button><button type="submit" class="btn btn-primary">إضافة المشتركين</button></div></form>
+  </dialog>
   <dialog id="confirm-dialog" aria-labelledby="confirm-title">
     <div class="dialog-head"><div><h2 id="confirm-title"></h2><p id="confirm-description"></p></div></div>
     <form method="dialog" class="dialog-body"><div class="dialog-actions"><button class="btn btn-outline" value="cancel">إلغاء</button><button class="btn btn-danger" id="confirm-accept" value="confirm">تأكيد</button></div></form>
   </dialog>
 
   <dialog id="print-dialog" aria-labelledby="print-title">
-    <div class="dialog-head"><div><h2 id="print-title">معاينة قبل الطباعة</h2><p>راجع الكشف قبل إرساله إلى الطابعة.</p></div><button class="icon-btn dialog-close" type="button" data-close="print-dialog" aria-label="إغلاق"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
-    <div class="preview-toolbar"><p>يشمل الكشف جميع المشتركين والحقول المضافة.</p><button type="button" class="btn btn-primary" id="print-button"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>طباعة الكشف</button></div>
+    <div class="dialog-head"><div><h2 id="print-title">معاينة قبل الطباعة</h2><p>كشف مستقل للفيز الحالي، يشمل مجموع الأمبيرات وعنوانك المختار.</p></div><button class="icon-btn dialog-close" type="button" data-close="print-dialog" aria-label="إغلاق"><svg class="icon" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
+    <div class="preview-toolbar"><p>اختر «حفظ بتنسيق PDF» أو «Save as PDF» من نافذة الطباعة. يُفضّل إيقاف رؤوس الصفحات وتذييلاتها.</p><button type="button" class="btn btn-primary" id="print-button"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>حفظ PDF / طباعة</button></div>
     <div class="print-page" id="print-page"></div>
   </dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -298,25 +333,65 @@
   <script>
     (() => {
       'use strict';
-      const KEY = 'daftar_molida_v1';
+      const KEY = 'daftar_molida_v2', LEGACY_KEY = 'daftar_molida_v1';
       const $ = (id) => document.getElementById(id);
       const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
       const uid = () => (globalThis.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'id-' + Date.now() + '-' + Math.random().toString(36).slice(2);
-      const fmt = (v) => new Intl.NumberFormat('ar-IQ', {maximumFractionDigits: 3}).format(v);
+      const fmt = (v) => new Intl.NumberFormat('ar-IQ', {maximumFractionDigits: 6}).format(v);
       const icons = {
         edit:'<svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg>',
         delete:'<svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13h12l1-13M9 7V4h6v3"/></svg>'
       };
-      let state = {version:1, fields:[], subscribers:[]};
-      let storageWorks = true, editingId = null, toastTimer;
+      let state = makeInitialState();
+      let storageWorks = true, editingId = null, toastTimer, folderEditing = null;
       try {
-        const saved = localStorage.getItem(KEY);
+        const saved = localStorage.getItem(KEY) || localStorage.getItem(LEGACY_KEY);
         if (saved) state = validateData(JSON.parse(saved));
       } catch (error) {
         storageWorks = false;
         console.error('Unable to read saved data', error);
       }
+      attachRows();
+      function makePhase(name) { return {id:uid(), name, title:'كشف المشتركين', subscribers:[]}; }
+      function makeBoard(name) { return {id:uid(), name, phases:Array.from({length:4},(_,i)=>makePhase('فيز '+(i+1)))}; }
+      function makeInitialState() { return {version:2,fields:[],boards:Array.from({length:4},(_,i)=>makeBoard('لوحة '+(i+1))),activeBoardId:null,activePhaseId:null}; }
+      function currentBoard() { return state.boards.find(b=>b.id===state.activeBoardId) || null; }
+      function currentPhase() { return currentBoard()?.phases.find(p=>p.id===state.activePhaseId) || null; }
+      function allRows() { return state.boards.flatMap(b=>b.phases.flatMap(p=>p.subscribers)); }
+      function sumAmps(rows) { return Math.round(rows.reduce((n,r)=>n+r.amps,0)*1000000)/1000000; }
+      function attachRows() {
+        Object.defineProperty(state,'subscribers',{configurable:true,enumerable:false,get:()=>currentPhase()?.subscribers || [],set:rows=>{ const p=currentPhase(); if(p)p.subscribers=rows; }});
+      }
       function validateData(data) {
+        if (data?.version===1) {
+          const old=validateLegacy(data), migrated=makeInitialState();
+          migrated.fields=old.fields; migrated.boards[0].phases[0].subscribers=old.subscribers;
+          return migrated;
+        }
+        if (!data || data.version!==2 || !Array.isArray(data.fields) || !Array.isArray(data.boards) || data.boards.length>100) throw new Error('invalid');
+        const fields=validateLegacy({version:1,fields:data.fields,subscribers:[]}).fields, ids=new Set();
+        let totalRows=0, phaseCount=0;
+        const checkId = id => { if(typeof id!=='string'||!id||id.length>100||ids.has(id))throw new Error('invalid');ids.add(id);return id; };
+        const checkText = (s,max) => {if(typeof s!=='string'||!s.trim()||s.length>max)throw new Error('invalid');return s.trim();};
+        const boards=data.boards.map(b=>{
+          if(!b||!Array.isArray(b.phases)||b.phases.length>200)throw new Error('invalid');
+          const id=checkId(b.id), name=checkText(b.name,60);
+          const phases=b.phases.map(p=>{
+            if(!p)throw new Error('invalid');
+            const phaseId=checkId(p.id), phaseName=checkText(p.name,60), title=checkText(p.title,180);
+            const rows=validateLegacy({version:1,fields,subscribers:p.subscribers}).subscribers;
+            rows.forEach(r=>checkId(r.id));totalRows+=rows.length;phaseCount++;
+            if(totalRows>100000||phaseCount>2000)throw new Error('invalid');
+            return {id:phaseId,name:phaseName,title,subscribers:rows};
+          });
+          if(new Set(phases.map(p=>p.name)).size!==phases.length)throw new Error('invalid');
+          return {id,name,phases};
+        });
+        if(new Set(boards.map(b=>b.name)).size!==boards.length)throw new Error('invalid');
+        const board=boards.find(b=>b.id===data.activeBoardId);
+        return {version:2,fields,boards,activeBoardId:board?.id||null,activePhaseId:board?.phases.find(p=>p.id===data.activePhaseId)?.id||null};
+      }
+      function validateLegacy(data) {
         if (!data || data.version !== 1 || !Array.isArray(data.fields) || !Array.isArray(data.subscribers) || data.fields.length > 5 || data.subscribers.length > 10000) throw new Error('invalid');
         const fieldIds = new Set(), rowIds = new Set();
         const fields = data.fields.map(f => {
@@ -355,13 +430,15 @@
       }
       function render() {
         const count = state.subscribers.length;
-        const sum = state.subscribers.reduce((total, row) => total + row.amps, 0);
-        $('stat-count').textContent = fmt(count); $('stat-amps').textContent = fmt(sum); $('stat-fields').textContent = fmt(state.fields.length);
+        const all=allRows(), sum = sumAmps(all);
+        renderFolders();
+        $('stat-count').textContent = fmt(all.length); $('stat-amps').textContent = fmt(sum); $('stat-boards').textContent=fmt(state.boards.length); $('stat-phases').textContent=fmt(state.boards.reduce((n,b)=>n+b.phases.length,0));
         $('count-pill').textContent = fmt(count) + ' مشترك';
         const term = $('search').value.trim().toLocaleLowerCase('ar');
         const rows = state.subscribers.map((row,index) => ({row,index})).filter(({row}) => !term || [row.name, ...Object.values(row.values)].some(value => value.toLocaleLowerCase('ar').includes(term)));
         $('table-head').innerHTML = '<tr><th scope="col">التسلسل</th><th scope="col">اسم المشترك</th><th scope="col">الأمبيرات</th>' + state.fields.map(f => '<th scope="col">'+escapeHTML(f.label)+'</th>').join('') + '<th scope="col">الإجراءات</th></tr>';
         $('table-body').innerHTML = rows.map(({row,index}) => '<tr><td class="row-number">'+fmt(index+1)+'</td><td class="name-cell">'+escapeHTML(row.name)+'</td><td><span class="amp-pill">'+fmt(row.amps)+' أمبير</span></td>'+state.fields.map(f=>'<td>'+escapeHTML(row.values[f.id] || '—')+'</td>').join('')+'<td><div class="row-actions"><button type="button" class="icon-btn" data-edit="'+escapeHTML(row.id)+'" aria-label="تعديل '+escapeHTML(row.name)+'">'+icons.edit+'</button><button type="button" class="icon-btn delete" data-delete="'+escapeHTML(row.id)+'" aria-label="حذف '+escapeHTML(row.name)+'">'+icons.delete+'</button></div></td></tr>').join('');
+        $('table-total').innerHTML='<tr class="phase-total"><td colspan="2">مجموع أمبيرات الفيز كاملاً</td><td>'+fmt(sumAmps(state.subscribers))+' أمبير</td>'+('<td></td>'.repeat(state.fields.length+1))+'</tr>';
         $('empty-state').hidden = rows.length > 0;
         $('empty-title').textContent = count && term ? 'لا توجد نتائج' : 'لا يوجد مشتركون بعد';
         $('empty-text').textContent = count && term ? 'جرّب البحث باسم أو كلمة أخرى.' : 'ابدأ بإضافة أول مشترك إلى سجلك.';
@@ -370,6 +447,7 @@
         updateStatus();
       }
       function openSubscriber(id = null) {
+        if(!requirePhase())return;
         const row = state.subscribers.find(x => x.id === id);
         editingId = row ? id : null;
         $('subscriber-title').textContent = row ? 'تعديل المشترك' : 'إضافة مشترك';
@@ -391,7 +469,10 @@
           const row = state.subscribers.find(x => x.id === editingId);
           if (!row) return;
           Object.assign(row, {name, amps, values});
-        } else state.subscribers.push({id:uid(), name, amps, values});
+        } else {
+          if(state.subscribers.length>=10000 || allRows().length>=100000){$('subscriber-error').textContent='وصلت إلى الحد الأقصى لعدد المشتركين.';return;}
+          state.subscribers.push({id:uid(), name, amps, values});
+        }
         save(); render(); $('subscriber-dialog').close(); toast(editingId ? 'تم حفظ التعديلات' : 'تمت إضافة المشترك');
       });
       function renderFields() {
@@ -420,7 +501,7 @@
           const field=state.fields.find(f=>f.id===deleteButton.dataset.fieldDelete); if(!field)return;
           const ok=await confirmAction('حذف الحقل؟','سيتم حذف حقل «'+field.label+'» وبياناته من جميع المشتركين. لا يمكن التراجع عن ذلك.','حذف الحقل');
           if(!ok)return;
-          state.fields=state.fields.filter(f=>f.id!==field.id); state.subscribers.forEach(row=>delete row.values[field.id]);
+          state.fields=state.fields.filter(f=>f.id!==field.id); allRows().forEach(row=>delete row.values[field.id]);
           save();render();renderFields();toast('تم حذف الحقل');return;
         }
         const editButton=event.target.closest('[data-field-edit]');
@@ -449,24 +530,33 @@
       });
       function openFields() { $('field-error').textContent=''; $('new-field').value=''; renderFields(); $('fields-dialog').showModal(); }
       function buildPrint() {
+        const phase=currentPhase(), board=currentBoard(); if(!phase)return;
         const date = new Intl.DateTimeFormat('ar-IQ',{year:'numeric',month:'long',day:'numeric'}).format(new Date());
-        const sum = state.subscribers.reduce((n,r)=>n+r.amps,0);
-        $('print-page').innerHTML = '<div class="print-heading"><div><h3>كشف المشتركين</h3><p>دفتر المولّدة</p></div><div class="print-date">تاريخ الكشف: '+escapeHTML(date)+'</div></div><div class="print-summary">عدد المشتركين: '+fmt(state.subscribers.length)+' &nbsp;&nbsp; | &nbsp;&nbsp; إجمالي الأمبيرات: '+fmt(sum)+' أمبير</div><table class="print-table"><thead><tr><th>التسلسل</th><th>اسم المشترك</th><th>الأمبيرات</th>'+state.fields.map(f=>'<th>'+escapeHTML(f.label)+'</th>').join('')+'</tr></thead><tbody>'+state.subscribers.map((row,index)=>'<tr><td>'+fmt(index+1)+'</td><td>'+escapeHTML(row.name)+'</td><td>'+fmt(row.amps)+'</td>'+state.fields.map(f=>'<td>'+escapeHTML(row.values[f.id] || '—')+'</td>').join('')+'</tr>').join('')+'</tbody></table>'+(state.subscribers.length ? '' : '<div class="print-empty">لا توجد بيانات في السجل بعد.</div>');
+        const rows=phase.subscribers, sum=sumAmps(rows);
+        $('print-page').innerHTML = '<div class="print-heading"><div><h3>'+escapeHTML(phase.title)+'</h3><p>'+escapeHTML(board.name)+' / '+escapeHTML(phase.name)+'</p></div><div class="print-date">تاريخ الكشف: '+escapeHTML(date)+'</div></div><div class="print-summary">عدد المشتركين: '+fmt(rows.length)+' &nbsp; | &nbsp; <strong>مجموع الأمبيرات: '+fmt(sum)+' أمبير</strong></div><table class="print-table"><thead><tr><th scope="col">التسلسل</th><th scope="col">اسم المشترك</th><th scope="col">الأمبيرات</th>'+state.fields.map(f=>'<th scope="col">'+escapeHTML(f.label)+'</th>').join('')+'</tr></thead><tbody>'+rows.map((row,index)=>'<tr><td>'+fmt(index+1)+'</td><td>'+escapeHTML(row.name)+'</td><td>'+fmt(row.amps)+'</td>'+state.fields.map(f=>'<td>'+escapeHTML(row.values[f.id] || '—')+'</td>').join('')+'</tr>').join('')+'</tbody><tfoot><tr class="print-total"><td colspan="2">مجموع الأمبيرات</td><td>'+fmt(sum)+' أمبير</td>'+state.fields.map(()=>'<td></td>').join('')+'</tr></tfoot></table>'+(rows.length ? '' : '<div class="print-empty">لا يوجد مشتركون في هذا الفيز بعد.</div>');
       }
       document.addEventListener('click', event => {
         const close=event.target.closest('[data-close]');
         if(close) { $(close.dataset.close).close(); return; }
         const button=event.target.closest('[data-action]'); if(!button)return;
         switch(button.dataset.action) {
-          case 'home': $('subscribers').scrollIntoView({behavior:'smooth',block:'start'}); break;
+          case 'home': navigate(null,null); break;
+          case 'newboard': openFolder('board'); break;
+          case 'bulk': if(requirePhase()){ $('bulk-input').value='';$('bulk-error').textContent='';$('bulk-dialog').showModal(); } break;
           case 'add': openSubscriber(); break;
           case 'fields': openFields(); break;
           case 'backup': $('backup-dialog').showModal(); break;
-          case 'preview': buildPrint(); $('print-dialog').showModal(); break;
+          case 'preview': if(requirePhase()){buildPrint(); $('print-dialog').showModal();} break;
         }
       });
       $('search').addEventListener('input', render);
-      $('print-button').addEventListener('click', () => window.print());
+      $('print-button').addEventListener('click', () => {
+        const phase=currentPhase(), board=currentBoard();if(!phase)return;
+        document.title=(phase.title+' - '+board.name+' - '+phase.name).replace(/[\\/:*?"<>|]/g,'-');
+        window.print();
+      });
+      window.addEventListener('afterprint',()=>{document.title='دفتر المولّدة | اللوحات والفيزات';});
+      $('print-dialog').addEventListener('close',()=>{document.title='دفتر المولّدة | اللوحات والفيزات';});
       $('export-button').addEventListener('click', () => {
         const blob=new Blob([JSON.stringify({...state, exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
         const url=URL.createObjectURL(blob), link=document.createElement('a');
@@ -476,13 +566,119 @@
       $('import-file').addEventListener('change', async event => {
         const file=event.target.files?.[0]; event.target.value=''; if(!file)return;
         try {
-          if(file.size>5*1024*1024) throw new Error('size');
+          if(file.size>30*1024*1024) throw new Error('size');
           const imported=validateData(JSON.parse(await file.text()));
-          const ok=await confirmAction('استعادة النسخة؟','سيتم استبدال السجل الحالي بالكامل بـ '+fmt(imported.subscribers.length)+' مشترك من الملف.','استعادة النسخة');
+          const ok=await confirmAction('استعادة النسخة؟','سيتم استبدال السجل الحالي بالكامل بـ '+fmt(imported.boards.reduce((n,b)=>n+b.phases.reduce((m,p)=>m+p.subscribers.length,0),0))+' مشترك من الملف.','استعادة النسخة');
           if(!ok)return;
-          state=imported; $('search').value=''; save(); render(); $('backup-dialog').close(); toast('تمت استعادة النسخة الاحتياطية');
+          state=imported; state.activeBoardId=null;state.activePhaseId=null;attachRows(); $('search').value=''; save(); render(); $('backup-dialog').close(); toast('تمت استعادة النسخة الاحتياطية');
         } catch(error) { toast('تعذّرت الاستعادة: ملف النسخة غير صالح'); }
       });
+      const folderIcon='<svg class="icon" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>';
+      const phaseIcon='<svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg>';
+      function requirePhase() {
+        if(currentPhase())return true;
+        toast(currentBoard()?'اختر فيزاً أولاً من هذه اللوحة':'افتح لوحة ثم اختر الفيز المطلوب');
+        $('folder-view').scrollIntoView({behavior:'smooth',block:'start'}); return false;
+      }
+      function navigate(boardId,phaseId) {
+        state.activeBoardId=boardId;state.activePhaseId=phaseId;$('search').value='';save();render();
+      }
+      function renderFolders() {
+        const board=currentBoard(), phase=currentPhase();
+        $('subscribers').hidden=!phase;$('folder-view').hidden=Boolean(phase);
+        $('breadcrumbs').innerHTML='<button type="button" data-root>كل اللوحات</button>'+(board?'<span aria-hidden="true">/</span><button type="button" data-board="'+escapeHTML(board.id)+'">'+escapeHTML(board.name)+'</button>':'')+(phase?'<span aria-hidden="true">/</span><strong aria-current="page">'+escapeHTML(phase.name)+'</strong>':'');
+        $('folder-title').textContent=board?board.name+' — الفيزات':'اللوحات';
+        $('folder-description').textContent=board?'كل فيز له مشتركوه وعنوان كشفه وملف PDF مستقل.':'اختر لوحة لعرض الفيزات الموجودة داخلها.';
+        $('new-folder-button').textContent=board?'+ إضافة فيز':'+ إضافة لوحة';
+        $('board-summary').hidden=!board;
+        if(board) {
+          const rows=board.phases.flatMap(p=>p.subscribers);
+          $('board-summary').innerHTML='<span>الفيزات: <strong>'+fmt(board.phases.length)+'</strong></span><span>المشتركون: <strong>'+fmt(rows.length)+'</strong></span><span>مجموع أمبيرات اللوحة: <strong>'+fmt(sumAmps(rows))+' أمبير</strong></span>';
+        }
+        const items=board?board.phases:state.boards, type=board?'phase':'board';
+        $('folder-grid').innerHTML=items.length?items.map(item=>{
+          const rows=board?item.subscribers:item.phases.flatMap(p=>p.subscribers);
+          return '<article class="folder-card"><button type="button" class="folder-open" data-open-'+type+'="'+escapeHTML(item.id)+'"><span class="folder-symbol">'+(board?phaseIcon:folderIcon)+'</span><strong>'+escapeHTML(item.name)+'</strong><small>'+(board?'كشف PDF مستقل':fmt(item.phases.length)+' فيز')+' · '+fmt(rows.length)+' مشترك</small><div class="folder-total">'+fmt(sumAmps(rows))+' أمبير</div></button><div class="folder-tools"><button type="button" data-rename-'+type+'="'+escapeHTML(item.id)+'" aria-label="تغيير اسم '+escapeHTML(item.name)+'">تغيير الاسم</button><button type="button" class="danger" data-remove-'+type+'="'+escapeHTML(item.id)+'" aria-label="حذف '+escapeHTML(item.name)+'">حذف</button></div></article>';
+        }).join(''):'<div class="folder-empty">'+(board?'لا توجد فيزات. اضغط «إضافة فيز» للبدء.':'لا توجد لوحات. اضغط «إضافة لوحة» للبدء.')+'</div>';
+        if(phase){
+          $('phase-heading').textContent=board.name+' / '+phase.name;
+          if(document.activeElement!==$('report-title'))$('report-title').value=phase.title;
+          $('phase-summary').innerHTML='<span>عدد مشتركي الفيز: <strong>'+fmt(phase.subscribers.length)+'</strong></span><span>مجموع أمبيرات الفيز: <strong>'+fmt(sumAmps(phase.subscribers))+' أمبير</strong></span>';
+        }
+      }
+      function nextName(type,items) { let n=1; while(items.some(x=>x.name===type+' '+n))n++;return type+' '+n; }
+      function openFolder(type,id=null) {
+        const board=currentBoard();if(type==='phase'&&!board)return;
+        const items=type==='board'?state.boards:board.phases, item=items.find(x=>x.id===id);
+        folderEditing={type,id:item?.id||null,boardId:board?.id||null};
+        $('folder-dialog-title').textContent=item?'تغيير اسم '+item.name:(type==='board'?'إضافة لوحة':'إضافة فيز');
+        $('folder-name').value=item?.name||nextName(type==='board'?'لوحة':'فيز',items);$('folder-error').textContent='';
+        $('folder-dialog').showModal();$('folder-name').focus();$('folder-name').select();
+      }
+      $('new-folder-button').addEventListener('click',()=>openFolder(currentBoard()?'phase':'board'));
+      $('folder-form').addEventListener('submit',event=>{
+        event.preventDefault();if(!folderEditing)return;
+        const {type,id,boardId}=folderEditing, owner=state.boards.find(b=>b.id===boardId);
+        const items=type==='board'?state.boards:owner?.phases;if(!items)return;
+        const name=$('folder-name').value.trim();
+        if(!name||name.length>60){$('folder-error').textContent='أدخل اسماً من 1 إلى 60 حرفاً.';return;}
+        if(items.some(x=>x.id!==id&&x.name.toLocaleLowerCase('ar')===name.toLocaleLowerCase('ar'))){$('folder-error').textContent='هذا الاسم مستخدم بالفعل هنا.';return;}
+        if(id){ const item=items.find(x=>x.id===id);if(!item)return;item.name=name; }
+        else {
+          if((type==='board'&&items.length>=100)||(type==='phase'&&(items.length>=200||state.boards.reduce((n,b)=>n+b.phases.length,0)>=2000))||(type==='board'&&state.boards.reduce((n,b)=>n+b.phases.length,0)>1996)){$('folder-error').textContent='وصلت إلى الحد الأقصى. احتفظ بنسخة احتياطية قبل حذف أي بيانات.';return;}
+          items.push(type==='board'?makeBoard(name):makePhase(name));
+        }
+        save();render();$('folder-dialog').close();toast(id?'تم تغيير الاسم':type==='board'?'تمت إضافة اللوحة مع أربعة فيزات':'تمت إضافة الفيز');
+      });
+      $('breadcrumbs').addEventListener('click',e=>{
+        const root=e.target.closest('[data-root]'),b=e.target.closest('[data-board]');
+        if(root)navigate(null,null);else if(b)navigate(b.dataset.board,null);
+      });
+      $('folder-grid').addEventListener('click',async e=>{
+        const openBoard=e.target.closest('[data-open-board]'),openPhase=e.target.closest('[data-open-phase]');
+        if(openBoard){navigate(openBoard.dataset.openBoard,null);return;}
+        if(openPhase){navigate(currentBoard().id,openPhase.dataset.openPhase);return;}
+        for(const type of ['board','phase']){
+          const rename=e.target.closest('[data-rename-'+type+']'),remove=e.target.closest('[data-remove-'+type+']');
+          if(rename){openFolder(type,rename.getAttribute('data-rename-'+type));return;}
+          if(remove){
+            const owner=currentBoard(),items=type==='board'?state.boards:owner?.phases;
+            const item=items?.find(x=>x.id===remove.getAttribute('data-remove-'+type));if(!item)return;
+            const count=type==='board'?item.phases.reduce((n,p)=>n+p.subscribers.length,0):item.subscribers.length;
+            if(await confirmAction('حذف '+item.name+'؟','سيتم حذف '+fmt(count)+' مشترك'+(type==='board'?' وجميع فيزات هذه اللوحة':' من هذا الفيز')+'. لا يمكن التراجع عن ذلك.','حذف')){
+              if(type==='board')state.boards=state.boards.filter(b=>b.id!==item.id);else owner.phases=owner.phases.filter(p=>p.id!==item.id);
+              save();render();toast('تم الحذف');
+            }
+            return;
+          }
+        }
+      });
+      function saveTitle(showFeedback=false) {
+        const phase=currentPhase();if(!phase)return;
+        const title=$('report-title').value.trim();
+        if(!title){$('title-status').textContent='اكتب عنواناً؛ العنوان السابق محفوظ حتى تدخل نصاً جديداً.';if(showFeedback)$('report-title').focus();return;}
+        if(title.length>180)return;
+        phase.title=title;save();$('title-status').textContent=storageWorks?'تم حفظ العنوان؛ سيظهر داخل PDF وفي اسم الملف المقترح.':'تعذّر حفظ العنوان على الجهاز؛ يمكنك تنزيل نسخة احتياطية.';
+        if(showFeedback)toast(storageWorks?'تم حفظ عنوان الكشف':'تعذّر الحفظ التلقائي؛ نزّل نسخة احتياطية');
+      }
+      $('report-title').addEventListener('input',()=>saveTitle());
+      $('report-title').addEventListener('blur',()=>{const p=currentPhase();if(p&&!$('report-title').value.trim())$('report-title').value=p.title;});
+      $('save-title').addEventListener('click',()=>saveTitle(true));
+      $('bulk-form').addEventListener('submit',event=>{
+        event.preventDefault();if(!currentPhase())return;
+        const lines=$('bulk-input').value.split(/\r?\n/), parsed=[];
+        for(let i=0;i<lines.length;i++){
+          const line=lines[i].trim();if(!line)continue;
+          const parts=line.includes('\t')?line.split('\t'):line.split(/[؛;,،]/);
+          const name=parts[0]?.trim()||'',raw=arabicNumber(parts[1]||''),amps=Number(raw);
+          if(parts.length!==2||!name||name.length>100||!/^\d+(?:\.\d+)?$/.test(raw)||!Number.isFinite(amps)||amps<=0||amps>100000){$('bulk-error').textContent='تحقق من السطر '+fmt(i+1)+': أدخل اسم المشترك ثم فاصلاً ثم عدد الأمبيرات. لم تُضف أي صفوف.';return;}
+          const values={};state.fields.forEach(f=>values[f.id]='');parsed.push({id:uid(),name,amps,values});
+        }
+        if(!parsed.length){$('bulk-error').textContent='أدخل مشتركاً واحداً على الأقل.';return;}
+        if(state.subscribers.length+parsed.length>10000||allRows().length+parsed.length>100000){$('bulk-error').textContent='عدد الصفوف يتجاوز الحد الأقصى للمشتركين.';return;}
+        state.subscribers.push(...parsed);save();render();$('bulk-dialog').close();toast('تمت إضافة '+fmt(parsed.length)+' مشترك');
+      });
+
       render();
     })();
   </script>
